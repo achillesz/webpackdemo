@@ -4,10 +4,31 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/entry.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name]_[hash].js'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader'
+                    }
+                ]
+            }
+        ]
     },
     devtool: 'source-map',
     devServer: {
@@ -34,6 +55,7 @@ module.exports = {
             inject: true,
             filename: 'admin.html',
             template: 'template/index.html',
+            meta: {viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'}
        /*     templateParameters: '',
             favicon: ''*/
         }),
