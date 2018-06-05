@@ -3,6 +3,11 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== 'production'
+
+console.log(process.env.NODE_ENV, devMode, '...')
+
 module.exports = {
     entry: './src/entry.js',
     output: {
@@ -12,11 +17,12 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.s?[ac]ss$/,
                 use: [
-                    {
+                    MiniCssExtractPlugin.loader,
+               /*     {
                         loader: 'style-loader',
-                    },
+                    },*/
                     {
                         loader: 'css-loader',
                         options: {
@@ -27,6 +33,16 @@ module.exports = {
                         loader: 'postcss-loader'
                     }
                 ]
+            },  {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                        plugins: [require('@babel/plugin-proposal-object-rest-spread')]
+                    }
+                }
             }
         ]
     },
@@ -48,6 +64,12 @@ module.exports = {
         }
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        }),
         new CleanWebpackPlugin(['dist']),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({

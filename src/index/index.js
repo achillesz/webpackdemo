@@ -1,6 +1,6 @@
 import {} from './index.css'
 
-$('#app').text('hello ');
+$('#app').text('hello 11');
 
 $.ajax({
     url: 'c.json',

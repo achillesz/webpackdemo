@@ -1,3 +1,15 @@
 #app {
-    color: red;
+    color: green;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border-style: solid;
+    display: grid;
+    transition: all .5s;
+    user-select: none;
+    background: linear-gradient(to bottom, white, black);
+
+}
+
+::placeholder {
+    color: gray;
 }
